@@ -10,18 +10,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class PhoneDirectory extends Model
 {
     protected $fillable = [
-        'name',
         'department',
+        'name',
+        'address',
+        'phone',
         'extension',
-        'phone_number',
-        'notes',
-        'is_active',
+        'mobile',
+        'fax',
+        'email',
+        'city',
+        'zip',
+        'country',
+        'contact_person',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'is_active' => 'boolean',
-        ];
-    }
 }
