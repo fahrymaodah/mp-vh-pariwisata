@@ -168,6 +168,11 @@ class Reservation extends Model
         return $this->hasMany(GuestMessage::class);
     }
 
+    public function locators(): HasMany
+    {
+        return $this->hasMany(GuestLocator::class);
+    }
+
     // ── Scopes ───────────────────────────────────────
 
     public function scopeActive($query)
