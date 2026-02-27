@@ -2,22 +2,24 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Admin\Resources\ArrangementResource\RelationManagers;
+namespace App\Filament\Fo\Resources\ReservationResource\RelationManagers;
 
 use App\Enums\PostingType;
+use Filament\Actions;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Tables;
-use Filament\Actions;
 use Filament\Tables\Table;
 
-class LinesRelationManager extends RelationManager
+class FixCostArticlesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'lines';
+    protected static string $relationship = 'fixCostArticles';
+
+    protected static ?string $title = 'Fix Cost Articles';
 
     public function form(Schema $schema): Schema
     {
@@ -35,26 +37,27 @@ class LinesRelationManager extends RelationManager
                             ->required()
                             ->searchable()
                             ->preload(),
-                        TextInput::make('amount')
+                        TextInput::make('qty')
+                            ->numeric()
+                            ->default(1)
+                            ->minValue(1)
+                            ->required(),
+                        TextInput::make('price')
                             ->numeric()
                             ->default(0)
-                            ->prefix('IDR'),
+                            ->prefix('IDR')
+                            ->required(),
                         Select::make('posting_type')
                             ->options(PostingType::class)
-                            ->default(PostingType::Daily),
+                            ->default(PostingType::Daily)
+                            ->required(),
                         TextInput::make('total_posting')
                             ->numeric()
+                            ->nullable()
+                            ->helperText('Leave blank for unlimited'),
+                        DatePicker::make('start_from')
+                            ->label('Start From')
                             ->nullable(),
-                        Select::make('guest_type')
-                            ->options([
-                                'adult' => 'Adult',
-                                'child' => 'Child',
-                            ])
-                            ->default('adult'),
-                        Toggle::make('included_in_room_rate')
-                            ->default(true),
-                        Toggle::make('qty_always_one')
-                            ->default(true),
                     ]),
             ]);
     }
@@ -64,16 +67,26 @@ class LinesRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('article.name')
             ->columns([
-                Tables\Columns\TextColumn::make('department.name'),
-                Tables\Columns\TextColumn::make('article.name'),
-                Tables\Columns\TextColumn::make('amount')
-                    ->money('IDR'),
+                Tables\Columns\TextColumn::make('department.name')
+                    ->label('Department')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('article.name')
+                    ->label('Article')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('qty')
+                    ->alignCenter(),
+                Tables\Columns\TextColumn::make('price')
+                    ->money('IDR')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('posting_type')
-                    ->badge(),
-                Tables\Columns\IconColumn::make('included_in_room_rate')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('guest_type')
-                    ->badge(),
+                    ->badge()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('total_posting')
+                    ->alignCenter()
+                    ->default('-'),
+                Tables\Columns\TextColumn::make('start_from')
+                    ->date('d M Y')
+                    ->default('-'),
             ])
             ->headerActions([
                 Actions\CreateAction::make(),

@@ -10,6 +10,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables;
+use Filament\Actions;
 use Filament\Tables\Table;
 
 class SegmentsRelationManager extends RelationManager
@@ -51,9 +52,9 @@ class SegmentsRelationManager extends RelationManager
             ])
             ->filters([])
             ->headerActions([
-                Tables\Actions\AttachAction::make()
+                Actions\AttachAction::make()
                     ->preloadRecordSelect()
-                    ->form(fn (Tables\Actions\AttachAction $action): array => [
+                    ->form(fn (Actions\AttachAction $action): array => [
                         $action->getRecordSelect(),
                         Toggle::make('is_main')
                             ->label('Main Segment')
@@ -61,11 +62,11 @@ class SegmentsRelationManager extends RelationManager
                     ]),
             ])
             ->actions([
-                Tables\Actions\DetachAction::make(),
+                Actions\DetachAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DetachBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DetachBulkAction::make(),
                 ]),
             ]);
     }

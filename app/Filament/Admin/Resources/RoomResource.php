@@ -20,6 +20,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables;
+use Filament\Actions;
 use Filament\Tables\Table;
 
 class RoomResource extends Resource
@@ -107,11 +108,11 @@ class RoomResource extends Resource
                     ->options(fn () => Room::query()->distinct()->pluck('floor', 'floor')->toArray()),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

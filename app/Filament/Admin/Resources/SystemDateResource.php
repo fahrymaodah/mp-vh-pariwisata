@@ -15,6 +15,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables;
+use Filament\Actions;
 use Filament\Tables\Table;
 
 class SystemDateResource extends Resource
@@ -64,7 +65,7 @@ class SystemDateResource extends Resource
                     ->label('Last Updated'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Actions\EditAction::make(),
             ]);
     }
 
