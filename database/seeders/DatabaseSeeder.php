@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             MembershipCardTypeSeeder::class,
             GuestSeeder::class,
             ReservationSeeder::class,
+            LearningSeeder::class,
         ]);
     }
 }

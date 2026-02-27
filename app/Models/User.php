@@ -68,6 +68,26 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Reservation::class, 'created_by');
     }
 
+    public function scenarioAssignments(): HasMany
+    {
+        return $this->hasMany(ScenarioAssignment::class);
+    }
+
+    public function activityLogs(): HasMany
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
+
+    public function quizAttempts(): HasMany
+    {
+        return $this->hasMany(QuizAttempt::class);
+    }
+
+    public function tutorialProgress(): HasMany
+    {
+        return $this->hasMany(TutorialProgress::class);
+    }
+
     // ── Helper Methods ───────────────────────────────
 
     public function hasRole(UserRole $role): bool
