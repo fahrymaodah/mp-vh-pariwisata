@@ -17,6 +17,7 @@ class Invoice extends Model
         'reservation_id',
         'guest_id',
         'room_id',
+        'department_id',
         'type',
         'status',
         'bill_address',
@@ -57,6 +58,11 @@ class Invoice extends Model
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
+    }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
     }
 
     public function createdBy(): BelongsTo
