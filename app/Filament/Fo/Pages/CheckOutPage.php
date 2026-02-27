@@ -83,8 +83,7 @@ class CheckOutPage extends Page implements HasTable
                     ->color('gray'),
                 Tables\Columns\TextColumn::make('guest.full_name')
                     ->label('Guest Name')
-                    ->searchable()
-                    ->sortable()
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('guest', fn (Builder $q) => $q->where('name', 'like', "%{$search}%")->orWhere('first_name', 'like', "%{$search}%")))
                     ->weight('bold')
                     ->color(function (Reservation $record) {
                         if ($record->guest?->is_vip) {

@@ -6,6 +6,7 @@ namespace App\Filament\Fo\Pages;
 
 use App\Enums\InvoiceStatus;
 use App\Enums\InvoiceType;
+use App\Enums\ReservationStatus;
 use App\Models\Department;
 use App\Models\Guest;
 use App\Models\Invoice;
@@ -57,7 +58,7 @@ class InvoiceNsgPage extends Page implements HasTable
                         ->label('Outsider / Non-Stay Guest')
                         ->options(
                             Guest::query()
-                                ->whereDoesntHave('reservations', fn ($q) => $q->where('status', 'checked_in'))
+                                ->whereDoesntHave('reservations', fn ($q) => $q->where('status', ReservationStatus::CheckedIn))
                                 ->get()
                                 ->mapWithKeys(fn (Guest $g) => [$g->id => $g->full_name])
                         )

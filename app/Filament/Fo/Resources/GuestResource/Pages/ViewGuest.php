@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Fo\Resources\GuestResource\Pages;
 
 use App\Enums\GuestType;
+use App\Enums\ReservationStatus;
 use App\Filament\Fo\Resources\GuestResource;
 use App\Models\Guest;
 use App\Models\Reservation;
@@ -103,7 +104,7 @@ class ViewGuest extends ViewRecord
                                     ->label('Total Turnover')
                                     ->state(function (Guest $record): string {
                                         $total = $record->invoices()
-                                            ->selectRaw('COALESCE(SUM(total_amount), 0) as total')
+                                            ->selectRaw('COALESCE(SUM(total_sales), 0) as total')
                                             ->value('total');
                                         return 'IDR ' . number_format((float) $total, 0, ',', '.');
                                     }),
@@ -111,21 +112,21 @@ class ViewGuest extends ViewRecord
                                     ->label('Room Nights')
                                     ->state(function (Guest $record): int {
                                         return (int) $record->reservations()
-                                            ->whereIn('status', ['checked_in', 'checked_out'])
+                                            ->whereIn('status', [ReservationStatus::CheckedIn, ReservationStatus::CheckedOut])
                                             ->sum('nights');
                                     }),
                                 TextEntry::make('statistics.stay_count')
                                     ->label('Stay Count')
                                     ->state(function (Guest $record): int {
                                         return $record->reservations()
-                                            ->whereIn('status', ['checked_in', 'checked_out'])
+                                            ->whereIn('status', [ReservationStatus::CheckedIn, ReservationStatus::CheckedOut])
                                             ->count();
                                     }),
                                 TextEntry::make('statistics.no_shows')
                                     ->label('No-Shows')
                                     ->state(function (Guest $record): int {
                                         return $record->reservations()
-                                            ->where('status', 'no_show')
+                                            ->where('status', ReservationStatus::NoShow)
                                             ->count();
                                     }),
                             ]),
@@ -147,7 +148,7 @@ class ViewGuest extends ViewRecord
                                     ->label('Cancellations')
                                     ->state(function (Guest $record): int {
                                         return $record->reservations()
-                                            ->where('status', 'cancelled')
+                                            ->where('status', ReservationStatus::Cancelled)
                                             ->count();
                                     }),
                             ]),

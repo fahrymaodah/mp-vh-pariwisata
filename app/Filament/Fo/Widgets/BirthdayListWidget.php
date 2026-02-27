@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Fo\Widgets;
 
+use App\Enums\ReservationStatus;
 use App\Models\Guest;
 use App\Models\Reservation;
 use Filament\Tables;
@@ -52,7 +53,7 @@ class BirthdayListWidget extends BaseWidget
                     ->label('Room')
                     ->state(function (Guest $record): string {
                         $reservation = $record->reservations()
-                            ->where('status', 'checked_in')
+                            ->where('status', ReservationStatus::CheckedIn)
                             ->with('room')
                             ->first();
                         return $reservation?->room?->room_number ?? '-';
@@ -72,6 +73,6 @@ class BirthdayListWidget extends BaseWidget
             ->whereNotNull('birth_date')
             ->whereMonth('birth_date', $today->month)
             ->whereDay('birth_date', $today->day)
-            ->whereHas('reservations', fn (Builder $q) => $q->where('status', 'checked_in'));
+            ->whereHas('reservations', fn (Builder $q) => $q->where('status', ReservationStatus::CheckedIn));
     }
 }

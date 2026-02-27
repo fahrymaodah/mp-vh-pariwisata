@@ -8,6 +8,7 @@ use App\Enums\ReservationStatus;
 use App\Models\Reservation;
 use App\Models\SystemDate;
 use BackedEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\DatePicker;
 use Filament\Pages\Page;
 use Filament\Schemas\Schema;
@@ -74,8 +75,7 @@ class DepartureList extends Page implements HasTable
                     ->sortable(),
                 Tables\Columns\TextColumn::make('guest.full_name')
                     ->label('Guest Name')
-                    ->searchable()
-                    ->sortable()
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('guest', fn (Builder $q) => $q->where('name', 'like', "%{$search}%")->orWhere('first_name', 'like', "%{$search}%")))
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('roomCategory.code')
                     ->label('Cat.'),

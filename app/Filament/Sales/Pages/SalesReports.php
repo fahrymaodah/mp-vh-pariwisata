@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Sales\Pages;
 
+use App\Enums\GuestType;
 use App\Models\Guest;
 use App\Models\Reservation;
 use App\Models\SalesActivity;
@@ -247,14 +248,14 @@ class SalesReports extends Page
         $month = Carbon::parse($this->periodFrom)->month;
 
         return Guest::query()
-            ->whereMonth('date_of_birth', $month)
-            ->orderByRaw('DAY(date_of_birth) ASC')
+            ->whereMonth('birth_date', $month)
+            ->orderByRaw('DAY(birth_date) ASC')
             ->limit(100)
             ->get()
             ->map(fn ($row) => [
                 'guest_no' => $row->guest_no,
                 'name' => trim(($row->name ?? '') . ' ' . ($row->first_name ?? '')),
-                'birthday' => $row->date_of_birth ? Carbon::parse($row->date_of_birth)->format('d F') : '-',
+                'birthday' => $row->birth_date ? Carbon::parse($row->birth_date)->format('d F') : '-',
                 'phone' => $row->phone ?? '-',
                 'email' => $row->email ?? '-',
             ])
@@ -282,18 +283,18 @@ class SalesReports extends Page
     {
         return Reservation::query()
             ->select(
-                'sales_id',
+                'created_by',
                 DB::raw('COUNT(*) as total_reservations'),
-                DB::raw('SUM(total_amount) as total_revenue'),
+                DB::raw('SUM(room_rate * nights) as total_revenue'),
             )
             ->whereBetween('arrival_date', [$this->periodFrom, $this->periodTo])
-            ->whereNotNull('sales_id')
-            ->groupBy('sales_id')
-            ->with('sales:id,name')
+            ->whereNotNull('created_by')
+            ->groupBy('created_by')
+            ->with('createdBy:id,name')
             ->orderByDesc('total_revenue')
             ->get()
             ->map(fn ($row) => [
-                'sales_person' => $row->sales?->name ?? '-',
+                'sales_person' => $row->createdBy?->name ?? '-',
                 'total_reservations' => $row->total_reservations,
                 'total_revenue' => number_format((float) $row->total_revenue, 0, ',', '.'),
             ])
@@ -303,7 +304,7 @@ class SalesReports extends Page
     protected function getCompanyProduction(): array
     {
         return Guest::query()
-            ->where('type', 'company')
+            ->where('type', GuestType::Company)
             ->select('guests.id', 'guests.guest_no', 'guests.name', 'guests.company_title', 'guests.city')
             ->withCount(['reservations' => function ($q) {
                 $q->whereBetween('arrival_date', [$this->periodFrom, $this->periodTo]);

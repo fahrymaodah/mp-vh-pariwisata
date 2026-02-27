@@ -76,8 +76,7 @@ class ArrivalReservationList extends Page implements HasTable
 
                 Tables\Columns\TextColumn::make('guest.full_name')
                     ->label('Guest Name')
-                    ->searchable()
-                    ->sortable()
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('guest', fn (Builder $q) => $q->where('name', 'like', "%{$search}%")->orWhere('first_name', 'like', "%{$search}%")))
                     ->weight('bold')
                     ->color(function (Reservation $record): string {
                         // ARL Color Coding (3.13)

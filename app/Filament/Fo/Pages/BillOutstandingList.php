@@ -57,7 +57,7 @@ class BillOutstandingList extends Page implements HasTable
                     ->color('primary'),
                 TextColumn::make('reservation.guest.full_name')
                     ->label('Guest Name')
-                    ->searchable(),
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('reservation.guest', fn (Builder $q) => $q->where('name', 'like', "%{$search}%")->orWhere('first_name', 'like', "%{$search}%"))),
                 TextColumn::make('reservation.roomCategory.code')
                     ->label('Cat'),
                 TextColumn::make('reservation.arrangement.code')

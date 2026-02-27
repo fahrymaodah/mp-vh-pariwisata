@@ -268,9 +268,9 @@ class FoCashierReports extends Page implements HasTable
                         : '—')
                     ->alignEnd()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('created_at')
+                TextColumn::make('created_at_time')
                     ->label('Time')
-                    ->time('H:i'),
+                    ->getStateUsing(fn (Payment $r) => $r->created_at?->format('H:i') ?? '-'),
                 TextColumn::make('user.name')
                     ->label('ID'),
             ])
@@ -401,7 +401,7 @@ class FoCashierReports extends Page implements HasTable
                     ->color('primary'),
                 TextColumn::make('reservation.guest.full_name')
                     ->label('Guest Name')
-                    ->searchable(),
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('reservation.guest', fn (Builder $q) => $q->where('name', 'like', "%{$search}%")->orWhere('first_name', 'like', "%{$search}%"))),
                 TextColumn::make('total_sales')
                     ->label('Revenue')
                     ->money('IDR')
@@ -442,7 +442,7 @@ class FoCashierReports extends Page implements HasTable
             ->columns([
                 TextColumn::make('reservation.guest.full_name')
                     ->label('Name')
-                    ->searchable()
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('reservation.guest', fn (Builder $q) => $q->where('name', 'like', "%{$search}%")->orWhere('first_name', 'like', "%{$search}%")))
                     ->weight('bold'),
                 TextColumn::make('room.room_number')
                     ->label('RmNo')

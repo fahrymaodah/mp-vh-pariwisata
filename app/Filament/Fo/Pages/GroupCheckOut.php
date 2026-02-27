@@ -96,7 +96,7 @@ class GroupCheckOut extends Page implements HasTable
                     ->weight('bold'),
                 TextColumn::make('guest.full_name')
                     ->label('Contact Person')
-                    ->searchable(),
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('guest', fn (Builder $q) => $q->where('name', 'like', "%{$search}%")->orWhere('first_name', 'like', "%{$search}%"))),
                 TextColumn::make('checked_in_count')
                     ->label('Checked In')
                     ->getStateUsing(fn (Reservation $r) => $r->childReservations()->where('status', ReservationStatus::CheckedIn)->count())

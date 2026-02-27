@@ -115,7 +115,7 @@ class NationalityStatistic extends Page implements HasTable
     {
         $mode = $this->reportMode ?? 'in_house';
 
-        $query = Guest::query()
+        $innerQuery = Guest::query()
             ->select('nationality', DB::raw('COUNT(*) as guest_count'), DB::raw('MIN(guests.id) as id'))
             ->selectRaw(
                 'ROUND(COUNT(*) * 100.0 / NULLIF((SELECT COUNT(*) FROM guests g2 INNER JOIN reservations r2 ON g2.id = r2.guest_id WHERE '
@@ -124,9 +124,16 @@ class NationalityStatistic extends Page implements HasTable
             )
             ->join('reservations', 'guests.id', '=', 'reservations.guest_id');
 
-        $this->applyModeFilter($query, $mode);
+        $this->applyModeFilter($innerQuery, $mode);
 
-        return $query->groupBy('nationality');
+        $innerQuery->groupBy('nationality');
+
+        // Wrap as subquery to avoid MySQL ONLY_FULL_GROUP_BY conflict
+        // when Filament adds 'guests.id' as tiebreaker ORDER BY
+        $outerQuery = Guest::query();
+        $outerQuery->getQuery()->fromSub($innerQuery->toBase(), 'guests');
+
+        return $outerQuery;
     }
 
     protected function getSubQueryCondition(): string

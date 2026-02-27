@@ -137,8 +137,7 @@ class NightAuditReports extends Page implements HasTable
                     ->sortable(),
                 Tables\Columns\TextColumn::make('guest.full_name')
                     ->label('Guest')
-                    ->searchable()
-                    ->sortable()
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('guest', fn (Builder $q) => $q->where('name', 'like', "%{$search}%")->orWhere('first_name', 'like', "%{$search}%")))
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('roomCategory.code')
                     ->label('Cat.'),
@@ -177,7 +176,7 @@ class NightAuditReports extends Page implements HasTable
                     ->color('gray'),
                 Tables\Columns\TextColumn::make('guest.full_name')
                     ->label('Guest')
-                    ->searchable()
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('guest', fn (Builder $q) => $q->where('name', 'like', "%{$search}%")->orWhere('first_name', 'like', "%{$search}%")))
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('room.room_number')
                     ->label('Room')
@@ -213,7 +212,7 @@ class NightAuditReports extends Page implements HasTable
                     ->sortable(),
                 Tables\Columns\TextColumn::make('guest.full_name')
                     ->label('Guest')
-                    ->searchable()
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('guest', fn (Builder $q) => $q->where('name', 'like', "%{$search}%")->orWhere('first_name', 'like', "%{$search}%")))
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('roomCategory.code')
                     ->label('Cat.'),
@@ -225,7 +224,7 @@ class NightAuditReports extends Page implements HasTable
                 Tables\Columns\TextColumn::make('checked_out_at')
                     ->label('C/O Time')
                     ->dateTime('H:i')
-                    ->default('—'),
+                    ->placeholder('—'),
             ])
             ->defaultSort('room.room_number')
             ->striped();
