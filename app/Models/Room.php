@@ -43,6 +43,12 @@ class Room extends Model
         return $this->belongsTo(RoomCategory::class, 'room_category_id');
     }
 
+    /** Alias used by Filament RoomResource (relationship name matches FK convention). */
+    public function roomCategory(): BelongsTo
+    {
+        return $this->category();
+    }
+
     public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);

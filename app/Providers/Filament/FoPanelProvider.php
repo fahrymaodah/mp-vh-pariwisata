@@ -27,9 +27,11 @@ class FoPanelProvider extends PanelProvider
             ->path('fo')
             ->login()
             ->brandName('PAR Hotel — Front Office')
+            ->maxContentWidth('full')
             ->colors([
                 'primary' => Color::Blue,
             ])
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Fo/Resources'), for: 'App\\Filament\\Fo\\Resources')
             ->discoverPages(in: app_path('Filament/Fo/Pages'), for: 'App\\Filament\\Fo\\Pages')
             ->pages([
@@ -37,7 +39,7 @@ class FoPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Fo/Widgets'), for: 'App\\Filament\\Fo\\Widgets')
             ->widgets([
-                AccountWidget::class,
+                // AccountWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

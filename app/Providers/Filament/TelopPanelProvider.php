@@ -27,9 +27,11 @@ class TelopPanelProvider extends PanelProvider
             ->path('telop')
             ->login()
             ->brandName('PAR Hotel — Telephone Operator')
+            ->maxContentWidth('full')
             ->colors([
                 'primary' => Color::Cyan,
             ])
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Telop/Resources'), for: 'App\\Filament\\Telop\\Resources')
             ->discoverPages(in: app_path('Filament/Telop/Pages'), for: 'App\\Filament\\Telop\\Pages')
             ->pages([
@@ -37,7 +39,7 @@ class TelopPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Telop/Widgets'), for: 'App\\Filament\\Telop\\Widgets')
             ->widgets([
-                AccountWidget::class,
+                // AccountWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

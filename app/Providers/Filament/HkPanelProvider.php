@@ -27,9 +27,11 @@ class HkPanelProvider extends PanelProvider
             ->path('hk')
             ->login()
             ->brandName('PAR Hotel — Housekeeping')
+            ->maxContentWidth('full')
             ->colors([
                 'primary' => Color::Green,
             ])
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Hk/Resources'), for: 'App\\Filament\\Hk\\Resources')
             ->discoverPages(in: app_path('Filament/Hk/Pages'), for: 'App\\Filament\\Hk\\Pages')
             ->pages([
@@ -37,7 +39,7 @@ class HkPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Hk/Widgets'), for: 'App\\Filament\\Hk\\Widgets')
             ->widgets([
-                AccountWidget::class,
+                // AccountWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

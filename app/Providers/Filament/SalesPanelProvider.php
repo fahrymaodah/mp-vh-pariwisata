@@ -27,9 +27,11 @@ class SalesPanelProvider extends PanelProvider
             ->path('sales')
             ->login()
             ->brandName('PAR Hotel — Sales & Marketing')
+            ->maxContentWidth('full')
             ->colors([
                 'primary' => Color::Purple,
             ])
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Sales/Resources'), for: 'App\\Filament\\Sales\\Resources')
             ->discoverPages(in: app_path('Filament/Sales/Pages'), for: 'App\\Filament\\Sales\\Pages')
             ->pages([
@@ -37,7 +39,7 @@ class SalesPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Sales/Widgets'), for: 'App\\Filament\\Sales\\Widgets')
             ->widgets([
-                AccountWidget::class,
+                // AccountWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
