@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PhoneDirectory extends Model
 {
+    protected $table = 'phone_directory';
+
     protected $fillable = [
         'department',
         'name',

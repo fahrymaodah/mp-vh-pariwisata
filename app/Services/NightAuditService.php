@@ -432,7 +432,7 @@ class NightAuditService
 
     private function checkPayments(string $date): array
     {
-        $totalPayments = \App\Models\Payment::whereDate('payment_date', $date)
+        $totalPayments = \App\Models\Payment::whereDate('created_at', $date)
             ->where('is_cancelled', false)
             ->sum('amount');
 

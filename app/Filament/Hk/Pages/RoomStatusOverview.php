@@ -43,7 +43,7 @@ class RoomStatusOverview extends Page
             ->where('status', ReservationStatus::CheckedOut)
             ->count();
 
-        $checkedInToday = \App\Models\Reservation::whereDate('check_in_time', $today)
+        $checkedInToday = \App\Models\Reservation::whereDate('checked_in_at', $today)
             ->whereIn('status', [ReservationStatus::CheckedIn, ReservationStatus::CheckedOut])
             ->count();
 

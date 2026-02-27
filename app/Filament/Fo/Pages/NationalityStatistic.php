@@ -116,7 +116,7 @@ class NationalityStatistic extends Page implements HasTable
         $mode = $this->reportMode ?? 'in_house';
 
         $query = Guest::query()
-            ->select('nationality', DB::raw('COUNT(*) as guest_count'))
+            ->select('nationality', DB::raw('COUNT(*) as guest_count'), DB::raw('MIN(guests.id) as id'))
             ->selectRaw(
                 'ROUND(COUNT(*) * 100.0 / NULLIF((SELECT COUNT(*) FROM guests g2 INNER JOIN reservations r2 ON g2.id = r2.guest_id WHERE '
                 . $this->getSubQueryCondition()

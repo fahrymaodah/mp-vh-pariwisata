@@ -182,10 +182,10 @@ class SalesReports extends Page
     {
         return SegmentBudget::query()
             ->whereBetween('date', [$this->periodFrom, $this->periodTo])
-            ->with('segment:id,name')
+            ->with('segment:id,code,description')
             ->get()
             ->map(fn ($row) => [
-                'segment' => $row->segment?->name ?? '-',
+                'segment' => $row->segment?->description ?? '-',
                 'month' => Carbon::parse($row->date)->format('F Y'),
                 'budget_rooms' => $row->budget_rooms,
                 'budget_persons' => $row->budget_persons,

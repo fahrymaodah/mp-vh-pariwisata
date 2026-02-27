@@ -39,7 +39,7 @@ class SegmentBudgetResource extends Resource
                     Grid::make(2)->schema([
                         Select::make('segment_id')
                             ->label('Segment')
-                            ->relationship('segment', 'name')
+                            ->relationship('segment', 'description')
                             ->searchable()
                             ->preload()
                             ->required(),
@@ -73,7 +73,7 @@ class SegmentBudgetResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('segment.name')
+                TextColumn::make('segment.description')
                     ->label('Segment')
                     ->searchable()
                     ->sortable(),
@@ -96,7 +96,7 @@ class SegmentBudgetResource extends Resource
             ->filters([
                 SelectFilter::make('segment_id')
                     ->label('Segment')
-                    ->relationship('segment', 'name'),
+                    ->relationship('segment', 'description'),
             ])
             ->actions([
                 Actions\EditAction::make(),

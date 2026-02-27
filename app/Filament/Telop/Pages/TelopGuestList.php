@@ -78,7 +78,7 @@ class TelopGuestList extends Page implements HasTable
                 TextColumn::make('guest.first_name')
                     ->label('First Name')
                     ->toggleable(),
-                TextColumn::make('segment.name')
+                TextColumn::make('segment.description')
                     ->label('Segment')
                     ->toggleable(),
                 TextColumn::make('guest.nationality')
@@ -86,11 +86,14 @@ class TelopGuestList extends Page implements HasTable
                     ->toggleable(),
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'checked_in', 'in_house' => 'success',
-                        'confirmed', 'tentative' => 'info',
-                        'checked_out', 'departed' => 'gray',
-                        'cancelled', 'no_show' => 'danger',
+                    ->color(fn ($state): string => match (true) {
+                        $state instanceof \App\Enums\ReservationStatus => match ($state) {
+                            \App\Enums\ReservationStatus::CheckedIn => 'success',
+                            \App\Enums\ReservationStatus::Confirmed, \App\Enums\ReservationStatus::Tentative, \App\Enums\ReservationStatus::Guaranteed => 'info',
+                            \App\Enums\ReservationStatus::CheckedOut => 'gray',
+                            \App\Enums\ReservationStatus::Cancelled, \App\Enums\ReservationStatus::NoShow => 'danger',
+                            default => 'secondary',
+                        },
                         default => 'secondary',
                     }),
                 IconColumn::make('is_incognito')
@@ -138,13 +141,13 @@ class TelopGuestList extends Page implements HasTable
         $today = now()->toDateString();
 
         return match ($this->displayFilter) {
-            'reservation' => $query->whereIn('status', ['confirmed', 'tentative', 'guaranteed']),
-            'resident' => $query->whereIn('status', ['checked_in', 'in_house']),
+            'reservation' => $query->whereIn('status', [\App\Enums\ReservationStatus::Confirmed, \App\Enums\ReservationStatus::Tentative, \App\Enums\ReservationStatus::Guaranteed]),
+            'resident' => $query->where('status', \App\Enums\ReservationStatus::CheckedIn),
             'arrival' => $query->where('arrival_date', $today),
             'depart' => $query->where('departure_date', $today),
-            'departed' => $query->whereIn('status', ['checked_out', 'departed']),
+            'departed' => $query->where('status', \App\Enums\ReservationStatus::CheckedOut),
             'all' => $query,
-            default => $query->whereIn('status', ['checked_in', 'in_house']),
+            default => $query->where('status', \App\Enums\ReservationStatus::CheckedIn),
         };
     }
 }
