@@ -7,26 +7,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class LostAndFound extends Model
+class GuestPreference extends Model
 {
-    protected $table = 'lost_and_founds';
-
     protected $fillable = [
-        'type',
+        'reservation_id',
+        'guest_id',
         'room_id',
+        'preference_type',
         'description',
-        'found_by',
-        'submitted_to',
-        'claimed_by',
-        'claimed_date',
         'user_id',
     ];
 
-    protected function casts(): array
+    public function reservation(): BelongsTo
     {
-        return [
-            'claimed_date' => 'date',
-        ];
+        return $this->belongsTo(Reservation::class);
+    }
+
+    public function guest(): BelongsTo
+    {
+        return $this->belongsTo(Guest::class);
     }
 
     public function room(): BelongsTo

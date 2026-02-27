@@ -11,20 +11,17 @@ class LinenTransaction extends Model
 {
     protected $fillable = [
         'linen_type_id',
-        'room_id',
-        'transaction_date',
-        'quantity_sent',
-        'quantity_received',
-        'notes',
-        'created_by',
+        'type',
+        'qty',
+        'date',
+        'user_id',
     ];
 
     protected function casts(): array
     {
         return [
-            'transaction_date' => 'date',
-            'quantity_sent' => 'integer',
-            'quantity_received' => 'integer',
+            'date' => 'date',
+            'qty' => 'integer',
         ];
     }
 
@@ -33,13 +30,8 @@ class LinenTransaction extends Model
         return $this->belongsTo(LinenType::class);
     }
 
-    public function room(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Room::class);
-    }
-
-    public function createdBy(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(User::class);
     }
 }
