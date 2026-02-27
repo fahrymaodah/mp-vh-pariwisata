@@ -10,31 +10,32 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class SalesTask extends Model
 {
     protected $fillable = [
-        'sales_person_id',
-        'opportunity_id',
+        'sales_opportunity_id',
         'title',
         'description',
         'due_date',
-        'priority',
-        'status',
-        'completed_at',
+        'is_completed',
+        'result',
+        'result_notes',
+        'attachment_path',
+        'user_id',
     ];
 
     protected function casts(): array
     {
         return [
             'due_date' => 'date',
-            'completed_at' => 'datetime',
+            'is_completed' => 'boolean',
         ];
-    }
-
-    public function salesPerson(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'sales_person_id');
     }
 
     public function opportunity(): BelongsTo
     {
-        return $this->belongsTo(SalesOpportunity::class, 'opportunity_id');
+        return $this->belongsTo(SalesOpportunity::class, 'sales_opportunity_id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -10,11 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class SalesStage extends Model
 {
     protected $fillable = [
-        'code',
         'name',
         'probability',
         'sort_order',
-        'is_active',
     ];
 
     protected function casts(): array
@@ -22,7 +20,6 @@ class SalesStage extends Model
         return [
             'probability' => 'integer',
             'sort_order' => 'integer',
-            'is_active' => 'boolean',
         ];
     }
 

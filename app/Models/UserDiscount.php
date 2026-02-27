@@ -7,25 +7,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class SalesBudget extends Model
+class UserDiscount extends Model
 {
     protected $fillable = [
         'user_id',
-        'month',
-        'lodging',
-        'fb',
-        'others',
-        'room_nights',
+        'discount_percent',
+        'description',
     ];
 
     protected function casts(): array
     {
         return [
-            'month' => 'date',
-            'lodging' => 'decimal:2',
-            'fb' => 'decimal:2',
-            'others' => 'decimal:2',
-            'room_nights' => 'integer',
+            'discount_percent' => 'decimal:2',
         ];
     }
 
