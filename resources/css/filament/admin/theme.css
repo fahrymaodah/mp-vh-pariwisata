@@ -1,0 +1,17 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+/* ============================================
+ * Scan Filament PHP files & Blade views
+ * agar Tailwind mendeteksi class yang digunakan
+ * ============================================ */
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+/* ============================================
+ * Scan Blade components & Livewire views
+ * agar custom Tailwind classes juga bekerja
+ * di dalam Filament panel
+ * ============================================ */
+@source '../../../../resources/views/components/**/*';
+@source '../../../../resources/views/livewire/**/*';
+@source '../../../../app/Livewire/**/*';
