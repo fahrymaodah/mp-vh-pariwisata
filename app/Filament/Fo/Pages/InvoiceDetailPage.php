@@ -7,6 +7,7 @@ namespace App\Filament\Fo\Pages;
 use App\Enums\ArticleType;
 use App\Enums\InvoiceStatus;
 use App\Enums\PaymentMethod;
+use App\Enums\UserRole;
 use App\Models\Article;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
@@ -34,6 +35,11 @@ use UnitEnum;
 class InvoiceDetailPage extends Page implements HasTable
 {
     use InteractsWithTable;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::cashierRoles()) ?? false;
+    }
 
     protected string $view = 'filament.fo.pages.invoice-detail';
 

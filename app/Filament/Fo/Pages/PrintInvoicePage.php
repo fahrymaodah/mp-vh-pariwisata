@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Fo\Pages;
 
 use App\Models\Invoice;
+use App\Enums\UserRole;
 use App\Models\InvoiceItem;
 use App\Services\BillingService;
 use BackedEnum;
@@ -13,6 +14,11 @@ use Filament\Support\Icons\Heroicon;
 
 class PrintInvoicePage extends Page
 {
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::cashierRoles()) ?? false;
+    }
+
     protected string $view = 'filament.fo.pages.print-invoice';
 
     protected static string | BackedEnum | null $navigationIcon = Heroicon::Printer;

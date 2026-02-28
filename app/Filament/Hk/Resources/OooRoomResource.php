@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Hk\Resources;
 
 use App\Enums\OooType;
+use App\Enums\UserRole;
 use App\Models\Room;
 use App\Models\RoomOutOfOrder;
 use App\Models\SystemDate;
@@ -24,6 +25,11 @@ use UnitEnum;
 
 class OooRoomResource extends Resource
 {
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::hkSupervisorRoles()) ?? false;
+    }
+
     protected static ?string $model = RoomOutOfOrder::class;
 
     protected static string | BackedEnum | null $navigationIcon = Heroicon::WrenchScrewdriver;

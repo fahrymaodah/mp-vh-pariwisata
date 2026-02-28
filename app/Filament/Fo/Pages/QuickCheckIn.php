@@ -6,6 +6,7 @@ namespace App\Filament\Fo\Pages;
 
 use App\Enums\GuestType;
 use App\Enums\RoomStatus;
+use App\Enums\UserRole;
 use App\Models\Arrangement;
 use App\Models\Guest;
 use App\Models\Room;
@@ -32,6 +33,11 @@ use UnitEnum;
 class QuickCheckIn extends Page implements HasForms
 {
     use InteractsWithForms;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::receptionRoles()) ?? false;
+    }
 
     protected string $view = 'filament.fo.pages.quick-check-in';
 

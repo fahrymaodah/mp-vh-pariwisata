@@ -6,6 +6,7 @@ namespace App\Filament\Hk\Pages;
 
 use App\Enums\ReservationStatus;
 use App\Enums\RoomStatus;
+use App\Enums\UserRole;
 use App\Models\Room;
 use App\Models\SystemDate;
 use BackedEnum;
@@ -24,6 +25,11 @@ use UnitEnum;
 class RoomMaidReport extends Page implements HasTable
 {
     use InteractsWithTable;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::hkSupervisorRoles()) ?? false;
+    }
 
     protected string $view = 'filament.hk.pages.room-maid-report';
 

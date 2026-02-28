@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Hk\Pages;
 
 use App\Models\LinenTransaction;
+use App\Enums\UserRole;
 use App\Models\LinenType;
 use App\Models\SystemDate;
 use BackedEnum;
@@ -27,6 +28,11 @@ use UnitEnum;
 class LinenTransactions extends Page implements HasTable
 {
     use InteractsWithTable;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::hkSupervisorRoles()) ?? false;
+    }
 
     protected string $view = 'filament.hk.pages.linen-transactions';
 

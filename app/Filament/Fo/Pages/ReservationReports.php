@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Fo\Pages;
 
 use App\Enums\ReservationStatus;
+use App\Enums\UserRole;
 use App\Models\Reservation;
 use App\Models\RoomCategory;
 use App\Models\Segment;
@@ -20,6 +21,11 @@ use UnitEnum;
 
 class ReservationReports extends Page
 {
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::receptionRoles()) ?? false;
+    }
+
     protected static ?string $title = 'Reservation Reports';
 
     protected static ?string $navigationLabel = 'Reports';

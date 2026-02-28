@@ -19,10 +19,16 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use BackedEnum;
+use App\Enums\UserRole;
 use UnitEnum;
 
 class UserDiscountResource extends Resource
 {
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::salesManagerRoles()) ?? false;
+    }
+
     protected static ?string $model = UserDiscount::class;
     protected static string | BackedEnum | null $navigationIcon = Heroicon::ReceiptPercent;
     protected static string | UnitEnum | null $navigationGroup = 'Settings';

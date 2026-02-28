@@ -6,6 +6,7 @@ namespace App\Filament\Fo\Pages;
 
 use App\Models\NightAudit;
 use App\Models\SystemDate;
+use App\Enums\UserRole;
 use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\DatePicker;
@@ -16,6 +17,11 @@ use UnitEnum;
 
 class SystemDateManagement extends Page
 {
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::nightAuditRoles()) ?? false;
+    }
+
     protected string $view = 'filament.fo.pages.system-date-management';
 
     protected static string | BackedEnum | null $navigationIcon = Heroicon::CalendarDays;

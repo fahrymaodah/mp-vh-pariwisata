@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Fo\Pages;
 
 use App\Enums\InvoiceStatus;
+use App\Enums\UserRole;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Services\BillingService;
@@ -25,6 +26,11 @@ use UnitEnum;
 class BillTransferPage extends Page implements HasTable
 {
     use InteractsWithTable;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::cashierRoles()) ?? false;
+    }
 
     protected string $view = 'filament.fo.pages.bill-transfer';
 

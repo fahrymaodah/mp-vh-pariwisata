@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Fo\Pages;
 
 use App\Enums\ReservationStatus;
+use App\Enums\UserRole;
 use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\RoomCategory;
@@ -31,6 +32,11 @@ use UnitEnum;
 class GroupCheckIn extends Page implements HasTable
 {
     use InteractsWithTable;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::receptionRoles()) ?? false;
+    }
 
     protected string $view = 'filament.fo.pages.group-check-in';
 

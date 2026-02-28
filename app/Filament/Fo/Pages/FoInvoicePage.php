@@ -6,6 +6,7 @@ namespace App\Filament\Fo\Pages;
 
 use App\Enums\InvoiceStatus;
 use App\Enums\ReservationStatus;
+use App\Enums\UserRole;
 use App\Models\Invoice;
 use BackedEnum;
 use Filament\Pages\Page;
@@ -20,6 +21,11 @@ use UnitEnum;
 class FoInvoicePage extends Page implements HasTable
 {
     use InteractsWithTable;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::cashierRoles()) ?? false;
+    }
 
     protected string $view = 'filament.fo.pages.fo-invoice';
 

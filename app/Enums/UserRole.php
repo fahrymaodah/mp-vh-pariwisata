@@ -48,4 +48,46 @@ enum UserRole: string
             self::Student => 'fo',
         };
     }
+
+    // ── Role Groups for Access Control ───────────────
+
+    /**
+     * Roles that can access Reception functions (Guest Card, Reservation, Check-In).
+     */
+    public static function receptionRoles(): array
+    {
+        return [self::SuperAdmin, self::FoManager, self::Receptionist, self::Instructor, self::Student];
+    }
+
+    /**
+     * Roles that can access FO Cashier functions (Check-Out, Invoicing, Billing).
+     */
+    public static function cashierRoles(): array
+    {
+        return [self::SuperAdmin, self::FoManager, self::FoCashier, self::Instructor, self::Student];
+    }
+
+    /**
+     * Roles that can access Night Audit functions.
+     */
+    public static function nightAuditRoles(): array
+    {
+        return [self::SuperAdmin, self::FoManager, self::NightAuditor, self::Instructor, self::Student];
+    }
+
+    /**
+     * Roles that can access HK Supervisor functions (reports, linen, L&F, OOO).
+     */
+    public static function hkSupervisorRoles(): array
+    {
+        return [self::SuperAdmin, self::HkSupervisor, self::Instructor, self::Student];
+    }
+
+    /**
+     * Roles that can access Sales Manager functions (contract rates, budgets, discounts).
+     */
+    public static function salesManagerRoles(): array
+    {
+        return [self::SuperAdmin, self::SalesManager, self::Instructor, self::Student];
+    }
 }

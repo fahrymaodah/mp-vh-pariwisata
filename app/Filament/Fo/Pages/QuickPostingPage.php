@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Fo\Pages;
 
 use App\Enums\ReservationStatus;
+use App\Enums\UserRole;
 use App\Models\Article;
 use App\Models\Department;
 use App\Models\Reservation;
@@ -21,6 +22,11 @@ use UnitEnum;
 
 class QuickPostingPage extends Page
 {
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::cashierRoles()) ?? false;
+    }
+
     protected string $view = 'filament.fo.pages.quick-posting';
 
     protected static string | BackedEnum | null $navigationIcon = Heroicon::Bolt;

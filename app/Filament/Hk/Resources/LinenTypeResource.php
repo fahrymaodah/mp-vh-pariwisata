@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Hk\Resources;
 
 use App\Models\LinenType;
+use App\Enums\UserRole;
 use BackedEnum;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -18,6 +19,11 @@ use UnitEnum;
 
 class LinenTypeResource extends Resource
 {
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::hkSupervisorRoles()) ?? false;
+    }
+
     protected static ?string $model = LinenType::class;
 
     protected static string | BackedEnum | null $navigationIcon = Heroicon::RectangleStack;

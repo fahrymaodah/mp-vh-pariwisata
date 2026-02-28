@@ -6,6 +6,7 @@ namespace App\Filament\Fo\Pages;
 
 use App\Enums\InvoiceStatus;
 use App\Enums\InvoiceType;
+use App\Enums\UserRole;
 use App\Models\Invoice;
 use App\Services\BillingService;
 use BackedEnum;
@@ -25,6 +26,11 @@ use UnitEnum;
 class ClosedBillsPage extends Page implements HasTable
 {
     use InteractsWithTable;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::cashierRoles()) ?? false;
+    }
 
     protected string $view = 'filament.fo.pages.closed-bills';
 

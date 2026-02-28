@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Fo\Pages;
 
 use App\Enums\NightAuditStatus;
+use App\Enums\UserRole;
 use App\Models\NightAudit;
 use App\Models\SystemDate;
 use App\Services\NightAuditService;
@@ -17,6 +18,11 @@ use UnitEnum;
 
 class NightAuditPage extends Page
 {
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::nightAuditRoles()) ?? false;
+    }
+
     protected string $view = 'filament.fo.pages.night-audit';
 
     protected static string | BackedEnum | null $navigationIcon = Heroicon::Moon;

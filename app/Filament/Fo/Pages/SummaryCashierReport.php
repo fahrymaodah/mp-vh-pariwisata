@@ -6,6 +6,7 @@ namespace App\Filament\Fo\Pages;
 
 use App\Enums\InvoiceStatus;
 use App\Enums\ReservationStatus;
+use App\Enums\UserRole;
 use App\Filament\Traits\HasReportExport;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
@@ -31,6 +32,11 @@ class SummaryCashierReport extends Page implements HasTable
 {
     use InteractsWithTable;
     use HasReportExport;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::cashierRoles()) ?? false;
+    }
 
     protected string $view = 'filament.fo.pages.summary-cashier-report';
 

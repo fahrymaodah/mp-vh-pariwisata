@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Hk\Pages;
 
 use App\Enums\RoomStatus;
+use App\Enums\UserRole;
 use App\Models\Room;
 use BackedEnum;
 use Filament\Pages\Page;
@@ -13,6 +14,11 @@ use UnitEnum;
 
 class RoomCountSheet extends Page
 {
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::hkSupervisorRoles()) ?? false;
+    }
+
     protected string $view = 'filament.hk.pages.room-count-sheet';
 
     protected static string | BackedEnum | null $navigationIcon = Heroicon::TableCells;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Fo\Pages;
 
+use App\Enums\UserRole;
 use App\Models\Hotel;
 use App\Models\Reservation;
 use Filament\Pages\Page;
@@ -12,6 +13,11 @@ use Filament\Panel;
 class PrintRegistrationForm extends Page
 {
     protected static bool $shouldRegisterNavigation = false;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::receptionRoles()) ?? false;
+    }
 
     protected string $view = 'filament.fo.pages.print-registration-form';
 

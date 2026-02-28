@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Hk\Resources;
 
 use App\Models\LostAndFound;
+use App\Enums\UserRole;
 use BackedEnum;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -21,6 +22,11 @@ use UnitEnum;
 
 class LostAndFoundResource extends Resource
 {
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::hkSupervisorRoles()) ?? false;
+    }
+
     protected static ?string $model = LostAndFound::class;
 
     protected static string | BackedEnum | null $navigationIcon = Heroicon::MagnifyingGlass;

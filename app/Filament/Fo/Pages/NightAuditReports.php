@@ -6,6 +6,7 @@ namespace App\Filament\Fo\Pages;
 
 use App\Enums\NightAuditStatus;
 use App\Enums\ReservationStatus;
+use App\Enums\UserRole;
 use App\Models\NightAudit;
 use App\Models\Reservation;
 use App\Models\Room;
@@ -25,6 +26,11 @@ use UnitEnum;
 class NightAuditReports extends Page implements HasTable
 {
     use InteractsWithTable;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::nightAuditRoles()) ?? false;
+    }
 
     protected string $view = 'filament.fo.pages.night-audit-reports';
 

@@ -20,10 +20,16 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use BackedEnum;
+use App\Enums\UserRole;
 use UnitEnum;
 
 class SalesBudgetResource extends Resource
 {
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(UserRole::salesManagerRoles()) ?? false;
+    }
+
     protected static ?string $model = SalesBudget::class;
     protected static string | BackedEnum | null $navigationIcon = Heroicon::Banknotes;
     protected static string | UnitEnum | null $navigationGroup = 'Budget';
