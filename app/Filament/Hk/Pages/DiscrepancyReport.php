@@ -101,10 +101,10 @@ class DiscrepancyReport extends Page implements HasTable
                     ->label('Explanation')
                     ->getStateUsing(function (Room $record): string {
                         $hasCheckedIn = $record->reservations->where('status', ReservationStatus::CheckedIn)->isNotEmpty();
-                        if ($hasCheckedIn && $record->status->isAvailable()) {
+                        if ($hasCheckedIn && $record->status?->isAvailable()) {
                             return 'FO says Occupied, HK says Vacant';
                         }
-                        if (!$hasCheckedIn && $record->status->isOccupied()) {
+                        if (!$hasCheckedIn && $record->status?->isOccupied()) {
                             return 'HK says Occupied, FO has no active reservation';
                         }
                         return 'Status mismatch';

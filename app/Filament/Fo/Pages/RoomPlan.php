@@ -113,8 +113,8 @@ class RoomPlan extends Page
             'id' => $room->id,
             'number' => $room->room_number,
             'category' => $room->category->code ?? '-',
-            'status' => $room->status->value,
-            'statusColor' => $room->status->color(),
+            'status' => $room->status?->value ?? 'vacant',
+            'statusColor' => $room->status?->color() ?? 'gray',
         ])->toArray();
 
         // Get reservations in range

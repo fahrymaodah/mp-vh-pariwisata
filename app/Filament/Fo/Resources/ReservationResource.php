@@ -479,7 +479,7 @@ class ReservationResource extends Resource
                             'new_value' => ReservationStatus::Cancelled->value,
                         ]);
                     })
-                    ->visible(fn (Reservation $record) => $record->status->isActive() && $record->status !== ReservationStatus::CheckedIn),
+                    ->visible(fn (Reservation $record) => $record->status?->isActive() && $record->status !== ReservationStatus::CheckedIn),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([

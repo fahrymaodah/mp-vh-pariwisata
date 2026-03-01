@@ -140,7 +140,7 @@ class RoomStatusAdmin extends Page implements HasTable
                     ->color('primary')
                     ->requiresConfirmation()
                     ->action(fn (Room $record) => $this->changeStatus($record, RoomStatus::OccupiedClean))
-                    ->hidden(fn (Room $record) => !$record->status->isOccupied() || $record->status === RoomStatus::OccupiedClean),
+                    ->hidden(fn (Room $record) => !$record->status?->isOccupied() || $record->status === RoomStatus::OccupiedClean),
             ])
             ->bulkActions([]);
     }

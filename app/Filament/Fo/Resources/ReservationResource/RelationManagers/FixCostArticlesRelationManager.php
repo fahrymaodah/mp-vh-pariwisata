@@ -86,7 +86,7 @@ class FixCostArticlesRelationManager extends RelationManager
                     ->default('-'),
                 Tables\Columns\TextColumn::make('start_from')
                     ->date('d M Y')
-                    ->default('-'),
+                    ->placeholder('-'),
             ])
             ->headerActions([
                 Actions\CreateAction::make(),

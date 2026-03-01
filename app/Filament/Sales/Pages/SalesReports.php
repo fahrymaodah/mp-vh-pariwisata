@@ -170,7 +170,7 @@ class SalesReports extends Page
             ->get()
             ->map(fn ($row) => [
                 'sales_person' => $row->user?->name ?? '-',
-                'month' => Carbon::parse($row->month)->format('F Y'),
+                'month' => $row->month ? Carbon::parse($row->month)->format('F Y') : '-',
                 'lodging_budget' => number_format((float) $row->lodging, 0, ',', '.'),
                 'fb_budget' => number_format((float) $row->fb, 0, ',', '.'),
                 'others_budget' => number_format((float) $row->others, 0, ',', '.'),
@@ -187,7 +187,7 @@ class SalesReports extends Page
             ->get()
             ->map(fn ($row) => [
                 'segment' => $row->segment?->description ?? '-',
-                'month' => Carbon::parse($row->date)->format('F Y'),
+                'month' => $row->date ? Carbon::parse($row->date)->format('F Y') : '-',
                 'budget_rooms' => $row->budget_rooms,
                 'budget_persons' => $row->budget_persons,
                 'budget_lodging' => number_format((float) $row->budget_lodging, 0, ',', '.'),

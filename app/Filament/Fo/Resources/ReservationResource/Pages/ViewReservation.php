@@ -153,7 +153,7 @@ class ViewReservation extends ViewRecord
                                 TextEntry::make('deposit_limit_date')
                                     ->label('Limit Date')
                                     ->date('d M Y')
-                                    ->default('-'),
+                                    ->placeholder('-'),
                                 TextEntry::make('deposit_amount')
                                     ->label('Amount')
                                     ->money('IDR'),
@@ -285,7 +285,7 @@ class ViewReservation extends ViewRecord
                         ->success()
                         ->send();
                 })
-                ->visible(fn () => $record->status->isActive() && $record->status !== ReservationStatus::CheckedIn),
+                ->visible(fn () => $record->status?->isActive() && $record->status !== ReservationStatus::CheckedIn),
 
             // Room Sharer action
             Actions\Action::make('addRoomSharer')
@@ -343,7 +343,7 @@ class ViewReservation extends ViewRecord
                         ->success()
                         ->send();
                 })
-                ->visible(fn () => $record->status->isActive()),
+                ->visible(fn () => $record->status?->isActive()),
 
             // Group Reservation Admin (3.5)
             Actions\Action::make('splitGroup')
@@ -400,7 +400,7 @@ class ViewReservation extends ViewRecord
                         ->success()
                         ->send();
                 })
-                ->visible(fn () => $record->status->isActive() && $record->room_qty > 1 && ! $record->is_room_sharer),
+                ->visible(fn () => $record->status?->isActive() && $record->room_qty > 1 && ! $record->is_room_sharer),
 
             // Cancel Reservation
             Actions\Action::make('cancel')
@@ -436,7 +436,7 @@ class ViewReservation extends ViewRecord
                         ->success()
                         ->send();
                 })
-                ->visible(fn () => $record->status->isActive() && $record->status !== ReservationStatus::CheckedIn),
+                ->visible(fn () => $record->status?->isActive() && $record->status !== ReservationStatus::CheckedIn),
         ];
     }
 }

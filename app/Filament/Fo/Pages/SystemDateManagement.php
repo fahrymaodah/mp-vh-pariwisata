@@ -174,9 +174,9 @@ class SystemDateManagement extends Page
             ->limit(5)
             ->get()
             ->map(fn ($a) => [
-                'date' => $a->audit_date->format('d M Y'),
-                'status' => $a->status->label(),
-                'color' => $a->status->color(),
+                'date' => $a->audit_date?->format('d M Y') ?? '-',
+                'status' => $a->status?->label() ?? '-',
+                'color' => $a->status?->color() ?? 'gray',
             ])
             ->toArray();
     }
